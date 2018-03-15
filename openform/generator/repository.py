@@ -20,7 +20,7 @@ class InstancesRepo(object):
     def get_plan(self,instance_plan):
         self._os_instance(instance_plan)
         plan_data=json.dumps(
-            {
+        {
             "resource": {
                 self.resource_type: {
                     self.resource_name: {
