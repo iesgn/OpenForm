@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>OpenForm</title><meta charset="UTF-8" />
+  </head>
+  <body>
+    <form action="{% url 'new_plan' %}" method="post">
+      {% csrf_token %}
+      <select name="provider">
+        <option>OpenStack</option>
+        <option>AWS</option>
+        <option>GCP</option>
+      </select>
+      <select name="resource_type">
+        <option>Instancia</option>
+      </select>
+      <input type="submit" value="Begin the process" />
+    </form>
+  </body>
+</html>

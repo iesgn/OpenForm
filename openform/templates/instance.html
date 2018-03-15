@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>OpenForm</title><meta charset="UTF-8" />
+  </head>
+  <body>
+    <form action="{% url '_genplan' %}" method="post">
+      {% csrf_token %}
+      <input type="text" value="{{provider}}" name="provider" readonly/>
+      <input type="text" placeholder="Instance Name" name="instance_name" required/>
+      <input type="text" placeholder="Image ID" name="instance_image_id" required/>
+      <input type="text" placeholder="Favlor ID" name="instance_flavor_id" required/>
+      <input type="text" placeholder="Key pair name" name="instance_key_pair" required/>
+      <input type="text" placeholder="Security groups" name="instance_security_groups" required/>
+    <input type="submit" value="Create Terraform Plan" />
+  </body>
+</html>
