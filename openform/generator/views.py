@@ -17,8 +17,8 @@ def _genplan(request):
 	instance_plan["instance_flavor_id"]=request.POST['instance_flavor_id']
 	instance_plan["instance_key_pair"]=request.POST['instance_key_pair']
 	instance_plan["instance_security_groups"]=request.POST['instance_security_groups']
-	new_plan=repository.InstancesRepo(provider)
-	plan=new_plan.get_plan(instance_plan)
+	instance=repository.Instances(provider)
+	plan=instance.get_plan(instance_plan)
 	return showplan(request, plan)
 
 def showplan(request, plan):

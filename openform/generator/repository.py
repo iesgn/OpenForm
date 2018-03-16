@@ -3,7 +3,11 @@ import json
 import uuid
 # from . import models
 
-class InstancesRepo(object):
+# class Provider(object):
+#
+
+
+class Instances(object):
     def __init__(self, provider):
         self.provider=provider
         self.resource_name=str(uuid.uuid4())
