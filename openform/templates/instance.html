@@ -3,16 +3,25 @@
 
   <head>
     <title>OpenForm</title><meta charset="UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/static/js/form.js"></script>
   </head>
   <body>
-    <form action="{% url '_genplan' %}" method="post">
+    <form action="{% url '_genplan' %}" class="formulario" method="post">
       {% csrf_token %}
       <input type="text" value="{{provider}}" name="provider" readonly/>
-      <input type="text" placeholder="Instance Name" name="instance_name" required/>
-      <input type="text" placeholder="Image ID" name="instance_image_id" required/>
-      <input type="text" placeholder="Favlor ID" name="instance_flavor_id" required/>
-      <input type="text" placeholder="Key pair name" name="instance_key_pair" required/>
-      <input type="text" placeholder="Security groups" name="instance_security_groups" required/>
-    <input type="submit" value="Create Terraform Plan" />
+      <div class="instances_form">
+        <button class="add_instance">Add More Instances</button><span>Max 10.</span>
+        <div>
+          <input type="text" placeholder="Instance Name" name="instance_name" />
+          <input type="text" placeholder="Image ID" name="instance_image_id" />
+          <input type="text" placeholder="Favlor ID" name="instance_flavor_id" />
+          <input type="text" placeholder="Key pair name" name="instance_key_pair" />
+          <input type="text" placeholder="Security groups" name="instance_security_groups" />
+          <a href="#" class="remove_instance">X</a>
+        </div>
+      </div>
+      <input type="submit" value="Create Terraform Plan" />
+    </form>
   </body>
 </html>
