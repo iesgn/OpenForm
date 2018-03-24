@@ -6,7 +6,10 @@
   </head>
   <body>
     <pre>
-{{plan}}
+      {% for resource in plan %}
+{{resource}}
+      {% endfor %}
     </pre>
+    <input type="button" onclick="location.href='{% url 'main' %}'" value="Volver"/>
   </body>
 </html>
