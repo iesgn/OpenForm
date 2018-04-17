@@ -17,12 +17,30 @@ $(document).ready(function() {
         e.preventDefault(); $(this).parent('div').remove(); x--;
     })
 });
-$(document).ready(function(){
-  var global_image = $("input[name=global_image_text]")
-  var images = $("input[name=instance_image_id]")
-  var apply_button = $(".global_image")
+$(document).ready(function() {
+    var max_fields      = 5; //maximum input boxes allowed
+    var wrapper         = $(".networks_form"); //Fields wrapper
+    var add_button      = $(".add_network"); //Add button ID
 
-  $(apply_button).click(function(){
-    $(images).val($(global_image).val());
-  });
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            $(wrapper).append('<div><input type="text" placeholder="Network Name" name="network_name" required/><input type="text" placeholder="IP range" name="network_cidr" required/><a href="#" class="remove_network">X</a></div>');
+        }
+    });
+
+    $(wrapper).on("click",".remove_network", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
 });
+// $(document).ready(function(){
+//   var global_image = $("input[name=global_image_text]")
+//   var images = $("input[name=instance_image_id]")
+//   var apply_button = $(".global_image")
+//
+//   $(apply_button).click(function(){
+//     $(images).val($(global_image).val());
+//   });
+// });

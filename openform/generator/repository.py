@@ -7,6 +7,25 @@ class RequestRepo(object):
     def __init__(self, request):
         self.request=request
         self.os_instance_data=[]
+        self.os_network_data=[]
+
+    def _post_os_network(self):
+        # Aquí habrá que rellenar una lista con los datos de cada instancia.
+        # Deberá llamar a una función por cada provedor.
+        self._post_os_network_name()
+        self._post_os_network_cidr()
+        print(self.os_network_data)
+        return self.os_network_data
+
+    def _post_os_network_name(self):
+        names=self.request.POST.getlist('network_name')
+        print(names)
+        self.os_network_data.append(names)
+
+    def _post_os_network_cidr(self):
+        cidr=self.request.POST.getlist('network_cidr')
+        print(cidr)
+        self.os_network_data.append(cidr)
 
     def _post_os_instances(self):
         # Aquí habrá que rellenar una lista con los datos de cada instancia.
@@ -75,9 +94,63 @@ class Instances(object):
             }, indent=4))
         return self.instances_plan
 
-# class Networks(object):
-#     def __init__(self, provider):
-#         self.provider=provider
-#         self.resource_name=str(uuid.uuid4())
-#         self.instance={}
-#         self.instances_plan=[]
+class Networks(object):
+    def __init__(self, provider):
+        self.provider=provider
+        self.resource_name=str(uuid.uuid4())
+        self.network={}
+        self.subnet={}
+        self.networks_plan=[]
+
+    def _os_network(self,network_data):
+        # resource_type se consultará a una base de datos
+        self.network_resource_type="openstack_networking_network_v2"
+        for name in network_data[0]:
+            self.network[name]={'name': name,
+                                'admin_state_up': 'true'}
+        # self.json_data=json.dumps(self.network,indent=4)
+
+    def _os_subnet(self,network_data):
+        # resource_type se consultará a una base de datos
+        self.subnet_resource_type="openstack_networking_subnet_v2"
+        for name, cidr in zip(network_data[0], network_data[1]):
+            self.subnet[name]={ 'name': 'subnet-' + name,
+                                # 'network_id': "openstack_networking_network_v2." + self.subnet[name] + ".id",
+                                'cidr': cidr}
+        # self.json_data=json.dumps(self.network,indent=4)
+
+    def get_plan(self,network_data):
+        self._os_network(network_data)
+        self._os_subnet(network_data)
+        # plan_data=self.json_data
+        for i in self.network.keys():
+            self.networks_plan.append(json.dumps(
+            {
+                "resource": {
+                    self.network_resource_type: {
+                        self.network[i]['name']: self.network[i]
+                    }
+                }
+            }, indent=4))
+        for i in self.subnet.keys():
+            self.networks_plan.append(json.dumps(
+            {
+                "resource": {
+                    self.subnet_resource_type: {
+                        self.subnet[i]['name']: self.subnet[i]
+                    }
+                }
+            }, indent=4))
+        return self.networks_plan
+## Internal network
+# resource "openstack_networking_network_v2" "interna-openstack" {
+#   name           = "interna-openstack"
+#   admin_state_up = "true"
+# }
+#
+# resource "openstack_networking_subnet_v2" "subnet-openstack" {
+#   name       = "subnet-openstack"
+#   network_id = "${openstack_networking_network_v2.interna-openstack.id}"
+#   cidr       = "192.168.200.0/24"
+#   ip_version = 4
+# }
