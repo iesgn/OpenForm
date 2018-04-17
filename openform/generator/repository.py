@@ -68,8 +68,16 @@ class Instances(object):
             self.instances_plan.append(json.dumps(
             {
                 "resource": {
-                    self.resource_type:
-                        self.instance[i]
-                        }
+                    self.resource_type: {
+                            self.instance[i]['name']: self.instance[i]
+                    }
+                }
             }, indent=4))
         return self.instances_plan
+
+# class Networks(object):
+#     def __init__(self, provider):
+#         self.provider=provider
+#         self.resource_name=str(uuid.uuid4())
+#         self.instance={}
+#         self.instances_plan=[]

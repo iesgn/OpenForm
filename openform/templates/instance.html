@@ -11,9 +11,10 @@
       {% csrf_token %}
       <input type="text" value="{{provider}}" name="provider" readonly/>
       <div class="instances_form">
+        <span>Image: </span><input type="text" name="global_image_text"/><button class="global_image">Use this image</button>
         <button class="add_instance">Add More Instances</button><span>Max 10.</span>
         <div>
-          <input type="text" placeholder="Instance Name" name="instance_name" />
+          <input type="text" placeholder="Instance Name" name="instance_name" required/>
           <input type="text" placeholder="Image ID" name="instance_image_id" />
           <input type="text" placeholder="Favlor ID" name="instance_flavor_id" />
           <input type="text" placeholder="Key pair name" name="instance_key_pair" />
