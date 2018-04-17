@@ -8,25 +8,46 @@ class RequestRepo(object):
         self.request=request
         self.os_instance_data=[]
         self.os_network_data=[]
+        self.os_volume_data=[]
 
+    # Volume request
+    def _post_os_volume(self):
+        # Aquí habrá que rellenar una lista con los datos de cada instancia.
+        # Deberá llamar a una función por cada provedor.
+        self._post_os_volume_name()
+        self._post_os_volume_size()
+        self._post_os_volume_desc()
+        return self.os_volume_data
+
+    def _post_os_volume_name(self):
+        names=self.request.POST.getlist('volume_name')
+        self.os_volume_data.append(names)
+
+    def _post_os_volume_size(self):
+        size=self.request.POST.getlist('volume_size')
+        self.os_volume_data.append(size)
+
+    def _post_os_volume_desc(self):
+        desc=self.request.POST.getlist('volume_desc')
+        self.os_volume_data.append(desc)
+
+    # Nework request
     def _post_os_network(self):
         # Aquí habrá que rellenar una lista con los datos de cada instancia.
         # Deberá llamar a una función por cada provedor.
         self._post_os_network_name()
         self._post_os_network_cidr()
-        print(self.os_network_data)
         return self.os_network_data
 
     def _post_os_network_name(self):
         names=self.request.POST.getlist('network_name')
-        print(names)
         self.os_network_data.append(names)
 
     def _post_os_network_cidr(self):
         cidr=self.request.POST.getlist('network_cidr')
-        print(cidr)
         self.os_network_data.append(cidr)
 
+    # Instance request
     def _post_os_instances(self):
         # Aquí habrá que rellenar una lista con los datos de cada instancia.
         # Deberá llamar a una función por cada provedor.
@@ -115,7 +136,8 @@ class Networks(object):
         self.subnet_resource_type="openstack_networking_subnet_v2"
         for name, cidr in zip(network_data[0], network_data[1]):
             self.subnet[name]={ 'name': 'subnet-' + name,
-                                # 'network_id': "openstack_networking_network_v2." + self.subnet[name] + ".id",
+                                # Need fix this
+                                # 'network_id': "${openstack_networking_network_v2." + self.subnet[name] + ".id}",
                                 'cidr': cidr}
         # self.json_data=json.dumps(self.network,indent=4)
 
@@ -154,3 +176,45 @@ class Networks(object):
 #   cidr       = "192.168.200.0/24"
 #   ip_version = 4
 # }
+
+class Volumes(object):
+    def __init__(self, provider):
+        self.provider=provider
+        self.resource_name=str(uuid.uuid4())
+        self.volume={}
+        self.volumes_plan=[]
+
+    def _os_volume(self,volume_data):
+        # resource_type se consultará a una base de datos
+        self.volume_resource_type="openstack_blockstorage_volume_v2"
+        for name, size, desc in zip(volume_data[0],volume_data[1],volume_data[2]):
+            self.volume[name]={'name': name,
+                                'size': size,
+                                'description': desc}
+
+    def get_plan(self,volume_data):
+        self._os_volume(volume_data)
+        # plan_data=self.json_data
+        for i in self.volume.keys():
+            self.volumes_plan.append(json.dumps(
+            {
+                "resource": {
+                    self.volume_resource_type: {
+                            self.volume[i]['name']: self.volume[i]
+                    }
+                }
+            }, indent=4))
+        return self.volumes_plan
+# create new volume, not attached
+# resource "openstack_blockstorage_volume_v2" "terraform" {
+#   name        = "openstack"
+#   description = "Volume create by terraform"
+#   size        = 5
+# }
+#
+# # attach volume to orbit
+# resource "openstack_compute_volume_attach_v2" "attachedtorobit" {
+#   instance_id = "${openstack_compute_instance_v2.orbit.id}"
+#   volume_id = "${openstack_blockstorage_volume_v2.terraform.id}"
+# }
+#

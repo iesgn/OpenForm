@@ -17,6 +17,8 @@ def new_plan(request):
 		return render(request, 'instance.html', context)
 	elif context["resource_type"] == "Red":
 		return render(request, 'network.html', context)
+	elif context["resource_type"] == "Volumen":
+		return render(request, 'volume.html', context)
 
 def new_network_plan(request):
 	context={}
@@ -36,6 +38,10 @@ def _genplan(request):
 		network_data=request_data._post_os_network()
 		network=repository.Networks(provider)
 		plan=network.get_plan(network_data)
+	elif resource_type == "Volumen":
+		volume_data=request_data._post_os_volume()
+		volume=repository.Volumes(provider)
+		plan=volume.get_plan(volume_data)
 
 	return showplan(request, plan)
 

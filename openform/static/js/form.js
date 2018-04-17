@@ -35,6 +35,24 @@ $(document).ready(function() {
         e.preventDefault(); $(this).parent('div').remove(); x--;
     })
 });
+$(document).ready(function() {
+    var max_fields      = 5; //maximum input boxes allowed
+    var wrapper         = $(".volumes_form"); //Fields wrapper
+    var add_button      = $(".add_volume"); //Add button ID
+
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            $(wrapper).append('<div><input type="text" placeholder="Volume Name" name="volume_name" required/><input type="text" placeholder="Volume size" name="volume_size" required/><input type="text" placeholder="Volume description" name="volume_desc" required/><a href="#" class="remove_volume">X</a></div>');
+        }
+    });
+
+    $(wrapper).on("click",".remove_volume", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+});
 // $(document).ready(function(){
 //   var global_image = $("input[name=global_image_text]")
 //   var images = $("input[name=instance_image_id]")
