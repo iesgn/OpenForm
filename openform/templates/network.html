@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>OpenForm</title><meta charset="UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/static/js/form.js"></script>
+  </head>
+  <body>
+    <form action="{% url '_genplan' %}" class="formulario" method="post">
+      {% csrf_token %}
+      Provider: <input type="text" value="{{provider}}" name="provider" readonly/>
+      Resource: <input type="text" value="{{resource_type}}" name="resource_type" readonly/>
+      <div class="networks_form">
+        <button class="add_network">Add More Networks</button><span>Max 5.</span>
+        <div>
+          <input type="text" placeholder="Network Name" name="network_name" required/>
+          <input type="text" placeholder="IP range" name="network_cidr" required/>
+          <a href="#" class="remove_network">X</a>
+        </div>
+      </div>
+      <input type="submit" value="Create Terraform Plan" />
+    </form>
+  </body>
+</html>
