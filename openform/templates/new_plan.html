@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %} User Plans {% endblock %}
+
+{% block content %}
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="{% url 'dashboard' %}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Dashboard</a> <a href="{% url 'plans' %}" class="">Plan</a><a href="{% url 'new_plan' %}" class="{{activenewplan}}">New Plan</a></div>
+    <h1>Step: {{request.session.step}}</h1>
+  </div>
+  <div class="container-fluid">
+<hr>
+  </div>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="widget-box">
+        <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+          <h5>Provider</h5>
+        </div>
+        <div class="widget-content nopadding">
+          <form class="form-horizontal" method="post" action="/user/databases/bdlist" name="password_validate" id="password_validate" novalidate="novalidate">
+            {% csrf_token %}
+            <div class="control-group">
+              <label class="control-label">DBManager Username: </label>
+              <div class="controls">
+                <input type="text" name="username" id="required" value="{{db_user}}" readonly/>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">Password</label>
+              <div class="controls">
+                <input type="password" name="password" id="password" required/>
+              </div>
+            </div>
+            <div class="form-actions">
+              <input type="submit" value="Login DB Manager" class="btn btn-success">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+{% endblock %}
