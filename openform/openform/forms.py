@@ -11,7 +11,7 @@ from django.forms import ModelForm
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from .models import OpenFormUser, provider
+from .models import OpenFormUser, provider, aws_credential, os_credential, aws_instance
 
 class OpenFormUserCreationForm(UserCreationForm):
     """
@@ -22,10 +22,9 @@ class OpenFormUserCreationForm(UserCreationForm):
     # def __init__(self, *args, **kargs):
     #     super(OpenFormUserCreationForm, self).__init__(*args, **kargs)
     #     del self.fields['username']
-
     class Meta:
         model = OpenFormUser
-        fields = ("username", "email", "password")
+        fields = ("username", "email")
 
 class OpenFormUserChangeForm(UserChangeForm):
     """A form for updating users. Includes all the fields on
@@ -43,4 +42,25 @@ class OpenFormUserChangeForm(UserChangeForm):
 class OpenFormProvidersForm(ModelForm):
     class Meta:
         model = provider
+        fields = "__all__"
+
+class OpenFormCredentialTypeAWS(ModelForm):
+    secret_key = forms.CharField(widget=forms.PasswordInput())
+    # provider_id = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    class Meta:
+        model = aws_credential
+        fields = "__all__"
+
+class OpenFormCredentialTypeOS(ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    # provider_id = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    class Meta:
+        model = os_credential
+        fields = "__all__"
+
+class OpenFormAWSInstance(ModelForm):
+    key_name = forms.CharField(help_text='Absolute path to the ssh key. Ej: /home/user/.ssh/project.pem')
+    # provider_id = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    class Meta:
+        model = aws_instance
         fields = "__all__"

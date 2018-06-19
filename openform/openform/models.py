@@ -101,18 +101,31 @@ class OpenFormUser(AbstractBaseUser, PermissionsMixin):
 #     name = models.CharField(max_length=50)
 #     last_name = models.CharField(max_length=50)
 
+
+# Provider models
+
+class provider(models.Model):
+    provider_id = models.CharField(max_length=50, unique=True, primary_key=True)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=200, blank=True)
+
+# Credentials models
+
 class credential_type(models.Model):
     """
     Common cretentials type fields.
     """
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=200, blank=True)
+    provider_id = models.ForeignKey(provider, on_delete=models.CASCADE)
+
 
 class credentials(models.Model):
     """
     List of users credentials.
     """
-    username = models.OneToOneField(OpenFormUser, on_delete=models.CASCADE)
+    username = models.ForeignKey(OpenFormUser,
+        on_delete=models.CASCADE)
     credential_type_id = models.ForeignKey(credential_type,
         on_delete=models.CASCADE)
 
@@ -124,16 +137,10 @@ class plan(models.Model):
     """
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=200, blank=True)
-    username = models.OneToOneField(OpenFormUser, on_delete=models.CASCADE)
+    username = models.ForeignKey(OpenFormUser, on_delete=models.CASCADE)
     credential_id = models.ForeignKey(credentials,
         on_delete=models.CASCADE)
 
-# Provider models
-
-class provider(models.Model):
-    provider_id = models.CharField(max_length=50, unique=True, primary_key=True)
-    name = models.CharField(max_length=50)
-    description = models.CharField(max_length=200, blank=True)
 
 # INSTANCE models
 
@@ -142,7 +149,7 @@ class instance(models.Model):
         on_delete=models.CASCADE)
     name = models.CharField(max_length=50, blank=True)
     description = models.CharField(max_length=200, blank=True)
-    provider_id = models.OneToOneField(provider, on_delete=models.CASCADE)
+    provider_id = models.ForeignKey(provider, on_delete=models.CASCADE)
 
 # SECURITY GROUPS models
 
@@ -163,21 +170,21 @@ class plan_sg(models.Model):
 class instance_image(models.Model):
     name = models.CharField(max_length=50, blank=True)
     description = models.CharField(max_length=200, blank=True)
-    provider_id = models.OneToOneField(provider, on_delete=models.CASCADE)
+    provider_id = models.ForeignKey(provider, on_delete=models.CASCADE)
 
 # NETWORKS models
 
 class network(models.Model):
     name = models.CharField(max_length=50, blank=True)
     description = models.CharField(max_length=200, blank=True)
-    provider_id = models.OneToOneField(provider, on_delete=models.CASCADE)
+    provider_id = models.ForeignKey(provider, on_delete=models.CASCADE)
 
 # FLAVORS models
 
 class flavor(models.Model):
     name = models.CharField(max_length=50, blank=True)
     description = models.CharField(max_length=200, blank=True)
-    provider_id = models.OneToOneField(provider, on_delete=models.CASCADE)
+    provider_id = models.ForeignKey(provider, on_delete=models.CASCADE)
 
 ##############
 # AWS models #
@@ -203,6 +210,7 @@ class aws_credential(credential_type):
     secret_key = models.CharField(max_length=50)
     region = models.CharField(max_length=50)
 
+# data = {'access_key':'test' ,'secret_key':'test','region':'test','name':'test','description':'test'}
 #############
 # OS models #
 #############
