@@ -1,46 +1,129 @@
 {% extends 'base.html' %}
 
-{% block title %} User Plans {% endblock %}
+{% block title %} New Plan {% endblock %}
 
 {% block content %}
-<div id="content">
-  <div id="content-header">
-    <div id="breadcrumb"> <a href="{% url 'dashboard' %}" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Dashboard</a> <a href="{% url 'plans' %}" class="">Plan</a><a href="{% url 'new_plan' %}" class="{{activenewplan}}">New Plan</a></div>
-    <h1>Step: {{request.session.step}}</h1>
-  </div>
-  <div class="container-fluid">
-<hr>
-  </div>
-  <div class="row-fluid">
-    <div class="span12">
-      <div class="widget-box">
-        <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
-          <h5>Provider</h5>
+<!--main-container-part-->
+
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">New Plan</h4>
+            <div class="ml-auto text-right">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'plans' %}">Plans</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">New Plan</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
-        <div class="widget-content nopadding">
-          <form class="form-horizontal" method="post" action="/user/databases/bdlist" name="password_validate" id="password_validate" novalidate="novalidate">
-            {% csrf_token %}
-            <div class="control-group">
-              <label class="control-label">DBManager Username: </label>
-              <div class="controls">
-                <input type="text" name="username" id="required" value="{{db_user}}" readonly/>
-              </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label">Password</label>
-              <div class="controls">
-                <input type="password" name="password" id="password" required/>
-              </div>
-            </div>
-            <div class="form-actions">
-              <input type="submit" value="Login DB Manager" class="btn btn-success">
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Sales Cards  -->
+    <!-- ============================================================== -->
+    <div class="row">
+      {% if step == '1' %}
+      <h4 class="card-title">Step {{step}}: Select provider</h4>
+      {% for prov in provider %}
+      <div class="col-md-6 col-lg-2 col-xlg-3">
+          <a href="{% url 'new_plan' %}?step=2&provider_id={{prov.provider_id}}">
+            <div class="card card-hover">
+              <div class="box bg-cyan text-center">
+                  <h1 class="font-light text-white"><i class="mdi mdi-library-plus"></i></h1>
+                  <h6 class="text-white">{{prov.name}}</h6>
+              </div>
+            </div>
+          </a>
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% if step == '2' %}
 
 
+      {% if not credential_type_list %}
+          <div class="col-md-6">
+              <div class="card">
+                  <form class="form-horizontal" action="{% url 'new_credential' %}" method="post">
+                    {% csrf_token %}
+                      <div class="card-body">
+                          <h4 class="card-title">Credentials {{provider_name}}, Provider id: {{provider_id}}</h4>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">Provider ID:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.provider_id}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">Credential Name:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.name}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="lname" class="col-sm-3 text-right control-label col-form-label">Credential Description:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.description}}
+                                  <!-- <input type="text" class="form-control" id="lname" placeholder="Last Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="lname" class="col-sm-3 text-right control-label col-form-label">Access key:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.access_key}}
+                                  <!-- <input type="password" class="form-control" id="lname" placeholder="Password Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="email1" class="col-sm-3 text-right control-label col-form-label">Secret key:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.secret_key}}
+                                  <!-- <input type="password" class="form-control" id="email1" placeholder="Sec"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Region:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.region}}
+                                  <!-- <input type="text" class="form-control" id="cono1" placeholder="Contact No Here"> -->
+                              </div>
+                          </div>
+                      </div>
+                      <div class="border-top">
+                          <div class="card-body">
+                              <input type="submit" class="btn btn-primary" value="Submit"/>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+            </div>
+            {% else %}
+            {% for credential in credentials %}
+            <div class="col-md-6 col-lg-2 col-xlg-3">
+                <a href="{% url 'new_plan' %}?step=3">
+                  <div class="card card-hover">
+                    <div class="box bg-cyan text-center">
+                        <h1 class="font-light text-white"><i class="mdi mdi-library-plus"></i></h1>
+                        <h6 class="text-white">{{credential.name}}</h6>
+                    </div>
+                  </div>
+                </a>
+            </div>
+            {% endfor %}
+            {% endif %}
+      {% endif %}
+
+    </div>
 </div>
 {% endblock %}

@@ -3,23 +3,62 @@
 {% block title %} User Plans {% endblock %}
 
 {% block content %}
-<div id="content">
-  <div id="content-header">
-    <div id="breadcrumb"> <a href="/user/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
-  </div>
-  <div  class="quick-actions_homepage">
-    <ul class="quick-actions">
-      <li class="bg_ly"> <a href="{% url 'new_plan' %}"> <i class=" icon-folder-open"></i> New Plan </a> </li>
-      <li class="bg_lg"> <a href="/user/domains"> <i class="icon-globe"></i> Domains </a> </li>
-      <li class="bg_lb"> <a href="/user/databases"> <i class="icon-hdd"></i> Databases </a> </li>
-      <li class="bg_lo"> <a href="#"> <i class="icon-group"></i> Profile </a> </li>
-      <!-- url 'profile' -->
-      <li class="bg_ls"> <a href="/user/stats"> <i class="icon-signal"></i> Check Statistics</a> </li>
-    </ul>
-  </div>
-  {% for item in plan_data %}
-  {{item}}
-  {% endfor %}
+<!--main-container-part-->
 
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Plans</h4>
+            <div class="ml-auto text-right">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Plans</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Sales Cards  -->
+    <!-- ============================================================== -->
+    <div class="row">
+
+        {% if plan_count <= plan_limit %}
+        {% for plan in plan_data %}
+        <div class="col-md-6 col-lg-2 col-xlg-3">
+            <a href="{% url 'gen_plan' %}?plan={{plan.name}}">
+              <div class="card card-hover">
+                <div class="box bg-cyan text-center">
+                    <h1 class="font-light text-white"><i class="mdi mdi-amazon"></i></h1>
+                    <h6 class="text-white">{{plan.name}}</h6>
+                </div>
+              </div>
+            </a>
+        </div>
+        {% endfor %}
+
+          <!-- Column -->
+          <div class="col-md-6 col-lg-2 col-xlg-3">
+              <a href="{% url 'new_plan' %}?step1">
+                <div class="card card-hover">
+                  <div class="box bg-cyan text-center">
+                      <h1 class="font-light text-white"><i class="mdi mdi-library-plus"></i></h1>
+                      <h6 class="text-white">New Plan</h6>
+                  </div>
+                </div>
+              </a>
+          </div>
+        {% endif %}
+
+      </div>
+  </div>
 {% endblock %}

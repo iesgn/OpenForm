@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %} Plans {% endblock %}
+
+{% block content %}
+<!--main-container-part-->
+
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Generated Plan</h4>
+            <div class="ml-auto text-right">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Plans</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Sales Cards  -->
+    <!-- ============================================================== -->
+    <div class="row">
+      <pre>
+        {% for instance in instance_data %}
+        resource "aws_instance" "{{instance.name}}" {
+
+            ami                         = "{{instance.ami_id}}"
+            availability_zone           = "eu-west-1b"
+            instance_type               = "{{instance.instance_type}}"
+            key_name                    = "{{instance.name}}-keypair"
+            associate_public_ip_address = true
+            source_dest_check           = false
+            root_block_device {
+              volume_type = "gp2"
+              volume_size = "8"
+            }
+
+        }
+
+        resource "aws_key_pair" "{{instance.name}}-keypair" {
+          key_name = "{{instance.name}}-keypair"
+          public_key = "${file("{{instance.key_name}}")}
+          # public_key = "${file("~/.ssh/_KEYPAIR_NAME_")}" # Set the absolute path to the ssh key file.
+        }
+
+        {% endfor %}
+      </pre>
+    </div>
+</div>
+{% endblock %}

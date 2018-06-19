@@ -1,129 +1,132 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <title>Login Hosting</title><meta charset="UTF-8" />
-    <link rel="shortcut icon" type="image/png" href="/static/favicon.png"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  	<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
-  	<link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css" />
-    <link rel="stylesheet" href="/static/css/matrix-login.css" />
-    <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet" />
-  	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
-  </head>
-  <body>
-    <div id="loginbox">
-      <form id="loginform" class="form-vertical" method="post">
-        {% csrf_token %}
-        <div class="control-group normal_text"> <h3><img src="/static/img/logo.png" alt="Logo" /></h3></div>
-        <div class="control-group">
-          <div class="controls">
-            <div class="main_input_box">
-              <span class="add-on bg_lg"><i class="icon-user"> </i></span><input type="text" placeholder="Username" name="username" required/>
+{% extends "base.html" %}
+{% block title %}OpenForm Login{% endblock %}
+{% block body %}
+{% block content %}
+    <div class="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <!-- <div class="preloader">
+            <div class="lds-ripple">
+                <div class="lds-pos"></div>
+                <div class="lds-pos"></div>
             </div>
-          </div>
-        </div>
-        <div class="control-group">
-          <div class="controls">
-            <div class="main_input_box">
-              <span class="add-on bg_ly"><i class="icon-lock"></i></span><input type="password" placeholder="Password" name="password" required/>
-          <!-- {% if error %}
-
-          {% endif %} -->
+        </div> -->
+        <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Login box.scss -->
+        <!-- ============================================================== -->
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark">
+            <div class="auth-box bg-dark border-top border-secondary">
+                <div id="loginform">
+                    <div class="text-center p-t-20 p-b-20">
+                        <span class="db"><img src="/static/assets/images/logo.png" alt="logo" /></span>
+                    </div>
+                    <hr>
+                    <!-- Form -->
+                    <form class="form-horizontal m-t-20" id="loginform" method="post">
+                      {% csrf_token %}
+                        <div class="row p-b-30">
+                            <div class="col-12">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-success text-white" id="basic-addon1"><i class="ti-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required="" name="username">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-warning text-white" id="basic-addon2"><i class="ti-pencil"></i></span>
+                                    </div>
+                                    <input type="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required="" name="password">
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row border-top border-secondary">
+                            <div class="col-12">
+                                <div class="form-group">
+                                  <hr>
+                                    <div class="p-t-20">
+                                        <a href="{% url 'register' %}" class="btn btn-info" id="to-recover"><i class="fa fa-lock m-r-5"></i>Register</a>
+                                        <button class="btn btn-success float-right" type="submit">Login</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="recoverform">
+                    <div class="text-center">
+                        <span class="text-white">Enter your e-mail address below and we will send you instructions how to recover a password.</span>
+                    </div>
+                    <div class="row m-t-20">
+                        <!-- Form -->
+                        <form class="col-12" action="index.html">
+                            <!-- email -->
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-danger text-white" id="basic-addon1"><i class="ti-email"></i></span>
+                                </div>
+                                <input type="text" class="form-control form-control-lg" placeholder="Email Address" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <!-- pwd -->
+                            <div class="row m-t-20 p-t-20 border-top border-secondary">
+                                <div class="col-12">
+                                    <a class="btn btn-success" href="#" id="to-login" name="action">Back To Login</a>
+                                    <button class="btn btn-info float-right" type="button" name="action">Recover</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="form-actions">
-          <span class="pull-left"><a href="#" class="flip-link btn btn-info" id="to-recover">Register now!</a></span>
-          <span class="pull-right"><input type="submit" class="btn btn-success" value="Login" /></span>
-        </div>
-      </form>
-      <form id="recoverform" action="/register" class="register-from" method="post">
-        <hr>
-        {% csrf_token %}
-        <div class="personal_info">
-          <p class="normal_text">Enter your new Domain Name.</p>
-          <div class="controls">
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-globe"></i></span><input type="text" placeholder="Domain Name" name="domain" required/>
-              </div>
-          </div>
-        	<p class="normal_text">Enter your personal info.</p>
-          <div class="controls">
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-info-sign"></i></span><input type="text" placeholder="Nombre" name="givenname" required/>
-              </div>
-          </div>
-          <div class="controls">
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-info-sign"></i></span><input type="text" placeholder="Apellidos" name="surname" required/>
-              </div>
-          </div>
-          <div class="controls">
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-envelope"></i></span><input type="text" placeholder="E-mail address" name="email" required/>
-              </div>
-          </div>
-          <p class="normal_text">Enter your H4a Control Panel username.</p>
-          <div class="controls">
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-user"></i></span><input type="text" placeholder="Username" name="app_user" required/>
-              </div>
-          </div><div class="controls">
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-lock"></i></span><input type="password" placeholder="Password" name="app_password" required/>
-              </div>
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-lock"></i></span><input type="password" placeholder="Confirm password" name="app_password2" required/>
-              </div>
-          </div>
-
-        </div>
-        <div class="services_info">
-        	<p class="normal_text">Enter your FTP Info .</p>
-          <div class="controls">
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-user"></i></span><input type="text" placeholder="FTP Username" name="ftp_user" required/>
-              </div>
-          </div>
-          <div class="controls">
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-lock"></i></span><input type="password" placeholder="FTP Password" name="ftp_password" required/>
-              </div>
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-lock"></i></span><input type="password" placeholder="Confirm password" name="ftp_password2" required/>
-              </div>
-          </div>
-          <p class="normal_text">Enter your PostgreSQL Info .</p>
-          <div class="controls">
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-user"></i></span><input type="text" placeholder="DB Username" name="db_user" required/>
-              </div>
-          </div>
-          <div class="controls">
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-lock"></i></span><input type="password" placeholder="DB Password" name="db_password" required/>
-              </div>
-              <div class="main_input_box">
-                  <span class="add-on bg_lo"><i class="icon-lock"></i></span><input type="password" placeholder="Confirm password" name="db_password2" required/>
-              </div>
-          </div>
-          <p class="normal_text">¿Wanna be Premium! user?</p>
-          <div class="controls">
-              <div class="">
-                  <input type="radio" class="fl" name="premium" value="False" checked/> <label>No.</label>
-                  <input type="radio" class="fl" name="premium" value="True"/> <label>Si.</label>
-              </div>
-          </div>
-        </div>
-        <hr>
-        <div class="form-actions-recover">
-            <span class="pull-left"><a href="#" class="flip-link btn btn-success" id="to-login">&laquo; Back to login</a></span>
-            <span class="pull-right"><input type="submit" class="btn btn-success" value="Sing UP" /></span>
-        </div>
-      </form>
+        <!-- ============================================================== -->
+        <!-- Login box.scss -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper scss in scafholding.scss -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper scss in scafholding.scss -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right Sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right Sidebar -->
+        <!-- ============================================================== -->
     </div>
-  <script src="/static/js/jquery.min.js"></script>
-  <script src="/static/js/matrix.login.js"></script>
-  </body>
+    <!-- ============================================================== -->
+    <!-- All Required js -->
+    <!-- ============================================================== -->
+    {% endblock %}
+    {% block script %}
+    <!-- ============================================================== -->
+    <!-- This page plugin js -->
+    <!-- ============================================================== -->
+    <script>
+
+    $('[data-toggle="tooltip"]').tooltip();
+    $(".preloader").fadeOut();
+    // ==============================================================
+    // Login and Recover Password
+    // ==============================================================
+    $('#to-recover').on("click", function() {
+        $("#loginform").slideUp();
+        $("#recoverform").fadeIn();
+    });
+    $('#to-login').click(function(){
+
+        $("#recoverform").hide();
+        $("#loginform").fadeIn();
+    });
+    </script>
+    {% endblock %}
+  {% endblock %}
+</body>
+
 </html>
