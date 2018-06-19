@@ -32,15 +32,21 @@
     <!-- ============================================================== -->
     <div class="row">
       <pre>
+        {% if plan_provider == '1' %}
+        provider "aws" {
+            access_key = "{{aws_access_key}}"
+            secret_key = "{{aws_secret_key}}"
+            region     = "eu-west-1"
+        }
+
         {% for instance in instance_data %}
         resource "aws_instance" "{{instance.name}}" {
 
-            ami                         = "{{instance.ami_id}}"
+            ami                         = "{{instance.ami_id.ami_id}}" {{ami_description}}
             availability_zone           = "eu-west-1b"
-            instance_type               = "{{instance.instance_type}}"
-            key_name                    = "{{instance.name}}-keypair"
+            instance_type               = "{{instance.instance_type_id}}" {{flavor_description}}
+            key_name                    = "{{instance.name}}-keypair" {{ssh_key_description}}
             associate_public_ip_address = true
-            source_dest_check           = false
             root_block_device {
               volume_type = "gp2"
               volume_size = "8"
@@ -55,6 +61,7 @@
         }
 
         {% endfor %}
+        {% endif %}
       </pre>
     </div>
 </div>

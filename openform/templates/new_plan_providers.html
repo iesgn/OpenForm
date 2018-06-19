@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %} New Plan {% endblock %}
+
+{% block content %}
+<!--main-container-part-->
+
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">New Plan</h4>
+            <div class="ml-auto text-right">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'plans' %}">Plans</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">New Plan</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Sales Cards  -->
+    <!-- ============================================================== -->
+    <div class="row">
+      <h4 class="card-title">Step {{step}}: Select provider</h4>
+      {% for prov in provider %}
+      <div class="col-md-6 col-lg-2 col-xlg-3">
+          <a href="{% url 'new_plan_credentials' %}?provider_id={{prov.provider_id}}">
+            <div class="card card-hover">
+              <div class="box bg-cyan text-center">
+                  <h1 class="font-light text-white"><i class="mdi mdi-library-plus"></i></h1>
+                  <h6 class="text-white">{{prov.name}}</h6>
+              </div>
+            </div>
+          </a>
+      </div>
+      {% endfor %}
+    </div>
+</div>
+{% endblock %}
