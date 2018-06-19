@@ -93,6 +93,6 @@ class OpenFormAWSVpc(admin.ModelAdmin):
 admin.site.register(models.aws_vpc,OpenFormAWSVpc)
 
 class OpenFormAWSInstanceType(admin.ModelAdmin):
-    list_display = ('name', 'instance_type_id')
+    list_display = ('name', 'instance_type')
 
 admin.site.register(models.aws_instance_type,OpenFormAWSInstanceType)

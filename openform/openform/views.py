@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from django.http import Http404
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
-from .models import plan, provider, credential_type, OpenFormUser, credentials, aws_instance
+from .models import plan, provider, credential_type, OpenFormUser, credentials, aws_instance, aws_credential
 from .forms  import OpenFormUserCreationForm, OpenFormProvidersForm, OpenFormCredentialTypeAWS, OpenFormCredentialTypeOS
 
 # def OpenFormLogin(request):
@@ -58,57 +59,61 @@ def plans(request):
 	context = {
 		'title':'Plans',
 		'activeplanes':'active',
-		'plan_data': plan_data.filter(username=request.user.username),
+		'plan_data': plan_data.all(),
 		'plan_count': plan_data.count(),
 		'plan_limit': plan_limit
 		}
 	return render(request, 'plans.html', context)
 
-def new_plan(request):
+def new_plan_providers(request):
 	context = {
 		# 'activenewplan':'active',
 		'activenewplan':'current',
 		}
-	username=str(request.user.username)
-	print(username)
-	try:
-		step=request.GET['step']
-		provider_id=request.GET['provider_id']
-		print(step)
-	except:
-		request.session['step']='1'
-		step = request.session.get('step')
-	# del request.session['step']
-	if step == '1':
-		context['step'] = step
-		context['provider'] = provider.objects.all()
-		return render(request, 'new_plan.html', context)
-	if step == '2':
-		provider_name = provider.objects.get(provider_id=provider_id).name
-		context['step'] = step
-		context['provider_id'] = provider_id
-		context['provider_name'] = provider_name
-		context['credential_type_list'] = credential_type.objects.filter(provider_id=provider_id)
-		if provider_id == '1':
-			context['aws_form']=OpenFormCredentialTypeAWS()
-		if provider_id == '2':
-			context['os_form']=OpenFormCredentialTypeOS()
-		context['credentials'] = credentials.objects.get(username=username)
-		print('Dentro del 2!')
-		return render(request, 'new_plan.html', context)
-	# print(step)
-	print(step)
-	print('Fuera del 2!')
-	return render(request, 'new_plan.html', context)
-	# if int(step) > 4:
-	# 	return render(request, 'new_plan.html', context)
+	user=request.user.username
+	print(user)
+	# provider_id=request.GET['provider_id']
+	context['provider'] = provider.objects.all()
+	return render(request, 'new_plan_providers.html', context)
+
+def new_plan_credentials(request):
+	context = {}
+	provider_id = request.GET['provider_id']
+	provider_name = provider.objects.get(provider_id=provider_id).name
+	context['provider_id'] = provider_id
+	context['provider_name'] = provider_name
+	# keys = credentials.objects.all()
+	# for key in keys:
+		# if key.username.username == user:
+	# 		print(aws_credential.objects.get(id=key.credential_type_id.id).id)
+			# context['credential_list'].append(credentials.objects.get(id=key.credential_type_id.id))
+	# # keys.ge
+	#
+	credential_list=aws_credential.objects.filter()
+	# # Must change this method
+	if provider_id == '1':
+		context['aws_form']=OpenFormCredentialTypeAWS()
+	elif provider_id == '2':
+		context['os_form']=OpenFormCredentialTypeOS()
+	else:
+		raise Http404("No provider found with that id.")
+	print('Dentro del 2!')
+	return render(request, 'new_plan_credentials.html', context)
 
 
 def gen_plan(request):
 	plan_name=request.GET['plan']
 	context={}
 	plan_id=plan.objects.get(name=plan_name).id
-	context['instance_data'] = aws_instance.objects.filter(plan_id=plan_id)
+	context['plan_provider']=plan.objects.get(name=plan_name).provider_id.provider_id
+	# 1 = AWS, must change this
+	if context['plan_provider'] == '1':
+		credential_id=plan.objects.get(name=plan_name).credential_id.id
+		credential_type_id = credentials.objects.get(id=credential_id).credential_type_id.id
+		context['aws_access_key'] = aws_credential.objects.get(id=credential_type_id).access_key
+		context['aws_secret_key'] = aws_credential.objects.get(id=credential_type_id).secret_key
+		context['instance_data'] = aws_instance.objects.filter(plan_id=plan_id)
+
 	return render(request,'gen_plan.html', context)
 
 

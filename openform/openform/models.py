@@ -140,6 +140,7 @@ class plan(models.Model):
     username = models.ForeignKey(OpenFormUser, on_delete=models.CASCADE)
     credential_id = models.ForeignKey(credentials,
         on_delete=models.CASCADE)
+    provider_id = models.ForeignKey(provider, on_delete=models.CASCADE)
 
 
 # INSTANCE models
@@ -190,19 +191,19 @@ class flavor(models.Model):
 # AWS models #
 ##############
 class aws_instance_type(flavor):
-    instance_type_id = models.CharField(max_length=50)
+    instance_type = models.CharField(max_length=50, primary_key='true')
 
 class aws_vpc(network):
-    vpc_id = models.CharField(max_length=50)
+    vpc_id = models.CharField(max_length=50, primary_key='true')
 
 class aws_ami(instance_image):
-    ami_id = models.CharField(max_length=50)
+    ami_id = models.CharField(max_length=50, primary_key='true')
 
 class aws_instance(instance):
     key_name = models.CharField(max_length=50)
     ami_id =  models.ForeignKey(aws_ami,
         on_delete=models.CASCADE)
-    instance_type_id = models.ForeignKey(aws_instance_type,
+    instance_type = models.ForeignKey(aws_instance_type,
         on_delete=models.CASCADE)
 
 class aws_credential(credential_type):
@@ -216,13 +217,13 @@ class aws_credential(credential_type):
 #############
 
 class os_flavor(flavor):
-    flavor_id = models.CharField(max_length=50)
+    flavor_id = models.CharField(max_length=50, primary_key='true')
 
 class os_network(network):
-    network_id = models.CharField(max_length=50)
+    network_id = models.CharField(max_length=50, primary_key='true')
 
 class os_image(instance_image):
-    image_id = models.CharField(max_length=50)
+    image_id = models.CharField(max_length=50, primary_key='true')
 
 class os_credential(credential_type):
     user_name = models.CharField(max_length=50)
