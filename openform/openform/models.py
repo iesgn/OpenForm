@@ -84,6 +84,11 @@ class OpenFormUser(AbstractBaseUser, PermissionsMixin):
         """
         send_mail(subject, message, from_email, [self.email])
 
+    def is_autenticated(self):
+        """
+        Set autenticated state.
+        """
+        return True
 
 
 # class Profile(models.Model):
@@ -105,7 +110,7 @@ class OpenFormUser(AbstractBaseUser, PermissionsMixin):
 # Provider models
 
 class provider(models.Model):
-    provider_id = models.CharField(max_length=50, unique=True, primary_key=True)
+    provider_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=200, blank=True)
 
@@ -118,16 +123,18 @@ class credential_type(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=200, blank=True)
     provider_id = models.ForeignKey(provider, on_delete=models.CASCADE)
-
-
-class credentials(models.Model):
-    """
-    List of users credentials.
-    """
     username = models.ForeignKey(OpenFormUser,
         on_delete=models.CASCADE)
-    credential_type_id = models.ForeignKey(credential_type,
-        on_delete=models.CASCADE)
+
+#
+# class credentials(models.Model):
+#     """
+#     List of users credentials.
+#     """
+#     username = models.ForeignKey(OpenFormUser,
+#         on_delete=models.CASCADE)
+#     credential_type_id = models.ForeignKey(credential_type,
+#         on_delete=models.CASCADE)
 
 # PLAN models
 
@@ -138,7 +145,7 @@ class plan(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=200, blank=True)
     username = models.ForeignKey(OpenFormUser, on_delete=models.CASCADE)
-    credential_id = models.ForeignKey(credentials,
+    credential_type_id = models.ForeignKey(credential_type,
         on_delete=models.CASCADE)
     provider_id = models.ForeignKey(provider, on_delete=models.CASCADE)
 
@@ -191,13 +198,15 @@ class flavor(models.Model):
 # AWS models #
 ##############
 class aws_instance_type(flavor):
-    instance_type = models.CharField(max_length=50, primary_key='true')
+    instance_type = models.CharField(max_length=50, primary_key='true',
+    help_text='AWS instance types: https://www.ec2instances.info/')
 
 class aws_vpc(network):
     vpc_id = models.CharField(max_length=50, primary_key='true')
 
 class aws_ami(instance_image):
-    ami_id = models.CharField(max_length=50, primary_key='true')
+    ami_id = models.CharField(max_length=50, primary_key='true',
+        help_text='Comunity AMIS: https://cloud-images.ubuntu.com/locator/ec2/')
 
 class aws_instance(instance):
     key_name = models.CharField(max_length=50)
@@ -211,7 +220,7 @@ class aws_credential(credential_type):
     secret_key = models.CharField(max_length=50)
     region = models.CharField(max_length=50)
 
-# data = {'access_key':'test' ,'secret_key':'test','region':'test','name':'test','description':'test'}
+
 #############
 # OS models #
 #############

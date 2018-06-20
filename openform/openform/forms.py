@@ -11,7 +11,7 @@ from django.forms import ModelForm
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from .models import OpenFormUser, provider, aws_credential, os_credential, aws_instance
+from .models import OpenFormUser, provider, aws_credential, os_credential, aws_instance, aws_ami, aws_instance_type, plan,os_instance
 
 class OpenFormUserCreationForm(UserCreationForm):
     """
@@ -44,6 +44,12 @@ class OpenFormProvidersForm(ModelForm):
         model = provider
         fields = "__all__"
 
+class OpenFormPlanForm(ModelForm):
+    class Meta:
+        model = plan
+        fields = "__all__"
+
+
 class OpenFormCredentialTypeAWS(ModelForm):
     secret_key = forms.CharField(widget=forms.PasswordInput())
     # provider_id = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
@@ -63,4 +69,21 @@ class OpenFormAWSInstance(ModelForm):
     # provider_id = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
     class Meta:
         model = aws_instance
+        fields = "__all__"
+
+class OpenFormOSInstance(ModelForm):
+    class Meta:
+        model = os_instance
+        fields = "__all__"
+
+
+class OpenFormAmiAWS(ModelForm):
+    class Meta:
+        model = aws_ami
+        fields = "__all__"
+
+
+class OpenFormAWSFlavor(ModelForm):
+    class Meta:
+        model = aws_instance_type
         fields = "__all__"

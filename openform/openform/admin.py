@@ -19,7 +19,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from openform import models
  # OpenFormUser, provider, credentials, aws_credential, plan, instance, instance_image, network, flavor,aws_instance_type
-from .forms import OpenFormUserChangeForm, OpenFormUserCreationForm, OpenFormProvidersForm,  OpenFormCredentialTypeAWS, OpenFormAWSInstance
+from .forms import OpenFormUserChangeForm, OpenFormUserCreationForm, OpenFormProvidersForm,  OpenFormCredentialTypeAWS, OpenFormAWSInstance, OpenFormCredentialTypeOS
 
 class OpenFormUserAdmin(UserAdmin):
     # The forms to add and change user instances
@@ -59,15 +59,17 @@ class OpenFormProviders(admin.ModelAdmin):
 
 admin.site.register(models.provider, OpenFormProviders)
 
-class OpenFormCredentials(admin.ModelAdmin):
-    list_display = ('username', 'credential_type_id')
+# class OpenFormCredentials(admin.ModelAdmin):
+    # list_display = ('username', 'credential_type_id')
 
-admin.site.register(models.credentials, OpenFormCredentials)
+# admin.site.register(models.credentials, OpenFormCredentials)
 
 class OpenFormPlan(admin.ModelAdmin):
     list_display = ('name', 'username')
 
 admin.site.register(models.plan, OpenFormPlan)
+
+# AWS models
 
 class OpenFormAWSCredentials(admin.ModelAdmin):
     list_display = ('name', 'access_key')
@@ -96,3 +98,32 @@ class OpenFormAWSInstanceType(admin.ModelAdmin):
     list_display = ('name', 'instance_type')
 
 admin.site.register(models.aws_instance_type,OpenFormAWSInstanceType)
+
+# OpenStack models
+
+class OpenFormOScredentials(admin.ModelAdmin):
+    list_display = ('username', 'tenant_name')
+    form = OpenFormCredentialTypeOS
+
+admin.site.register(models.os_credential,OpenFormOScredentials)
+
+
+class OpenFormOSInstance(admin.ModelAdmin):
+    list_display = ('name', 'image_id', 'flavor_id')
+
+admin.site.register(models.os_instance, OpenFormOSInstance)
+
+class OpenFormOSImage(admin.ModelAdmin):
+    list_display = ('name', 'image_id','description')
+
+admin.site.register(models.os_image, OpenFormOSImage)
+
+class OpenFormOSNetwork(admin.ModelAdmin):
+    list_display = ('name', 'network_id')
+
+admin.site.register(models.os_network,OpenFormOSNetwork)
+
+class OpenFormOSFlavor(admin.ModelAdmin):
+    list_display = ('name', 'flavor_id')
+
+admin.site.register(models.os_flavor,OpenFormOSFlavor)
