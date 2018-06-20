@@ -35,10 +35,10 @@
         {% if plan_count <= plan_limit %}
         {% for plan in plan_data %}
         <div class="col-md-6 col-lg-2 col-xlg-3">
-            <a href="{% url 'gen_plan' %}?plan={{plan.name}}">
+            <a href="{% url 'plan_instances' %}?plan_id={{plan.id}}">
               <div class="card card-hover">
                 <div class="box bg-cyan text-center">
-                    <h1 class="font-light text-white"><i class="mdi mdi-amazon"></i></h1>
+                    <h1 class="font-light text-white">{% if plan.provider_id.provider_id == 1 %}<i class="mdi mdi-amazon"></i>{%else%}OpenStack{% endif %}</h1>
                     <h6 class="text-white">{{plan.name}}</h6>
                 </div>
               </div>
@@ -48,7 +48,7 @@
 
           <!-- Column -->
           <div class="col-md-6 col-lg-2 col-xlg-3">
-              <a href="{% url 'new_plan_providers' %}?step1">
+              <a href="{% url 'new_plan_providers' %}">
                 <div class="card card-hover">
                   <div class="box bg-cyan text-center">
                       <h1 class="font-light text-white"><i class="mdi mdi-library-plus"></i></h1>

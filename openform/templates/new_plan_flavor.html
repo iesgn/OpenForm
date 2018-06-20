@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %} Plan Flavors {% endblock %}
+
+{% block content %}
+<!--main-container-part-->
+
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Flavors Availables</h4>
+            <div class="ml-auto text-right">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'plans' %}">Plans</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Flavors</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Sales Cards  -->
+    <!-- ============================================================== -->
+    {% if provider_id == '1' %}
+
+    <div class="row">
+      <div class="col-12">
+        <h6>Instance types availables, click on Continue button or add new instance types.</h6>
+        <hr>
+      </div>
+      <div class="col-12">
+          <div class="card">
+              <div class="card-body">
+                  <h5 class="card-title m-b-0">AWS Instance types</h5>
+              </div>
+              <table class="table">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Instance type</th>
+                    <th scope="col">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if aws_flavors_list %}
+                  {% for flavor in aws_flavors_list %}
+                  <tr>
+                    <td>{{flavor.name}}</td>
+                    <td>{{flavor.instance_type}}</td>
+                    <td>{{flavor.description}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+
+              </table>
+            </div>
+            <div class="border-top">
+                <div class="card-body">
+                  <a href="{% url 'new_plan_instance' %}?provider_id={{provider_id}}"><button type="button" class="btn btn-success">Continue</button></a>
+                </div>
+            </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div id="accordian-4">
+        <div class="card m-t-30">
+            <a class="card-header link" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-1" aria-expanded="true" aria-controls="Toggle-1">
+                <i class="seticon fa fa-arrow-right" aria-hidden="true"></i>
+                <span>Add new {{provider_name}} instance type</span>
+            </a>
+            <div id="Toggle-1" class="collapse multi-collapse">
+                <div class="card-body widget-content">
+                  <form class="form-horizontal" action="{% url 'new_flavor' %}" method="post">
+                    {% csrf_token %}
+                      <div class="card-body">
+                          <h4 class="card-title">Add new instance type: {{provider_name}} Provider id: {{provider_id}}</h4>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">Provider ID:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.provider_id}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">Instance type name:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.name}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">AWS Instance type*:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.instance_type}}
+                                *{{aws_form.instance_type.help_text}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="lname" class="col-sm-3 text-right control-label col-form-label">Description:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.description}}
+                                  <!-- <input type="text" class="form-control" id="lname" placeholder="Last Name Here"> -->
+                              </div>
+                          </div>
+                        </div>
+                      <div class="border-top">
+                          <div class="card-body">
+                              <input type="submit" class="btn btn-primary" value="Submit"/>
+                          </div>
+                      </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--
+    <div class="row">
+      <div class="col-md-6">
+          <div class="card">
+
+          </div>
+        </div> -->
+        {% endif %}
+
+</div>
+{% endblock %}

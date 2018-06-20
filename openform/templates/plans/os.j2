@@ -1,0 +1,17 @@
+# Configure the OpenStack Provider
+provider "openstack" {
+  user_name   = "admin"
+  tenant_name = "admin"
+  password    = "pwd"
+  auth_url    = "http://myauthurl:5000/v2.0"
+  region      = "RegionOne"
+}
+
+# node: {{instance_name}}
+
+resource "openstack_compute_instance_v2" "{{instance_name}}" {
+  name = "{{instance_name}}"
+  image_id = "{{image_id}}" # Debian 9.2
+  flavor_id = "{{flavor_id}}" # 2GB RAM, 2 CPU cores, 50 GB disk
+  key_pair = "{{key_pair}}"  # OS Project
+}

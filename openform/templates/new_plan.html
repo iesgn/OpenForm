@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %} Plan {% endblock %}
+
+{% block content %}
+<!--main-container-part-->
+
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Create Plan</h4>
+            <div class="ml-auto text-right">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'plans' %}">Plans</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">New Plan</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Sales Cards  -->
+    <!-- ============================================================== -->
+    <div class="row">
+
+      <form class="form-horizontal" action="{% url 'new_plan' %}" method="post">
+        {% csrf_token %}
+          <div class="card-body">
+              <h4 class="card-title">Create new AMI: {{provider_data.name}} Provider id: {{provider_data.provider_id}}</h4>
+              <div class="form-group row">
+                  <label for="fname" class="col-sm-3 text-right control-label col-form-label">Provider ID (Autoselect):</label>
+                  <div class="col-sm-9">
+                    {{form.provider_id}}
+                      <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label for="fname" class="col-sm-3 text-right control-label col-form-label">Plan Name:</label>
+                  <div class="col-sm-9">
+                    {{form.name}}
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label for="fname" class="col-sm-3 text-right control-label col-form-label">Username (Autoselect):</label>
+                  <div class="col-sm-9">
+                    {{form.username}}<span>{{user.username}}</span>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label for="fname" class="col-sm-3 text-right control-label col-form-label">Credential (Autoselect):</label>
+                  <div class="col-sm-9">
+                    {{form.credential_type_id}}
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label for="lname" class="col-sm-3 text-right control-label col-form-label">Description:</label>
+                  <div class="col-sm-9">
+                    {{form.description}}
+                      <!-- <input type="text" class="form-control" id="lname" placeholder="Last Name Here"> -->
+                  </div>
+              </div>
+            </div>
+          <div class="border-top">
+              <div class="card-body">
+                  <input type="submit" class="btn btn-primary" value="Create Plan"/>
+              </div>
+          </div>
+      </form>
+
+
+  </div>
+
+</div>
+{% endblock %}

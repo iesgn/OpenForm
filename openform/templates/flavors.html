@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %} Flavor list {% endblock %}
+
+{% block content %}
+<!--main-container-part-->
+
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Flavors list</h4>
+            <div class="ml-auto text-right">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Flavor</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Sales Cards  -->
+    <!-- ============================================================== -->
+    <div class="row">
+      <div class="col-12">
+          <div class="card">
+            {% for prov in providers %}
+              <div class="card-body">
+                  <h5 class="card-title m-b-0">{{prov.name}} Flavors</h5>
+              </div>
+              <table class="table">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Provider</th>
+                        {% if prov.provider_id == 1 %}
+                          <th scope="col">Instance type</th>
+                        {% endif %}
+                        {% if prov.provider_id == 2 %}
+                          <th scope="col">Flavor</th>
+                        {% endif %}
+                        <th scope="col">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if prov.provider_id == 1 %}
+                      {% for flavor in flavors_aws_list %}
+                      <tr>
+                        <td>{{flavor.name}}</td>
+                        <td>{{prov.name}}</td>
+                        <td>{{flavor.instance_type}}</td>
+                        <td>{{flavor.description}}</td>
+                      </tr>
+                      {% endfor %}
+                      {% endif %}
+                      {% if prov.provider_id == 2 %}
+                      {% for flavor in flavors_os_list %}
+                      <tr>
+                        <td>{{flavor.name}}</td>
+                        <td>{{prov.name}}</td>
+                        <td>{{flavor.flavor_id}}</td>
+                        <td>{{flavor.description}}</td>
+                      </tr>
+                      {% endfor %}
+                      {% endif %}
+                    </tbody>
+              </table>
+            {% endfor %}
+          </div>
+      </div>
+</div>
+{% endblock %}

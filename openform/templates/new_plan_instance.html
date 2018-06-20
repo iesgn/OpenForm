@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %} Plan Intances {% endblock %}
+
+{% block content %}
+<!--main-container-part-->
+
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Plan Instances</h4>
+            <div class="ml-auto text-right">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'plans' %}">Plans</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Instances</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Container fluid  -->
+<!-- ============================================================== -->
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Sales Cards  -->
+    <!-- ============================================================== -->
+    {% if provider_id == '1' %}
+    {% if aws_instances_list %}
+    <div class="row">
+      <div class="col-md-6 col-lg-2 col-xlg-3">
+        <h6>Instances used in this plan</h6>
+        {% for instance in aws_instances_list %}
+            <div class="card card-hover">
+              <div class="box bg-cyan text-center">
+                <h1 class="font-light text-white"><i class="mdi mdi-library-plus"></i></h1>
+                <h6 class="text-white">{{instance.name}}</h6>
+                <h6 class="text-white">{{instance.ami_id}}</h6>
+              </div>
+            </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div id="accordian-4">
+        <div class="card m-t-30">
+            <a class="card-header link" data-toggle="collapse" data-parent="#accordian-4" href="#Toggle-1" aria-expanded="true" aria-controls="Toggle-1">
+                <i class="seticon fa fa-arrow-right" aria-hidden="true"></i>
+                <span>Add new {{provider_name}} Instance to the plan: </span>
+            </a>
+            <div id="Toggle-1" class="collapse multi-collapse">
+                <div class="card-body widget-content">
+                  <form class="form-horizontal" action="{% url 'new_instance' %}" method="post">
+                    {% csrf_token %}
+                      <div class="card-body">
+                          <h4 class="card-title">Add new {{provider_name}} Instance. Provider id: {{provider_id}}</h4>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">Provider ID:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.provider_id}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">Plan ID:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.plan_id}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">Instance Name:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.name}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">AMI ID:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.ami_id}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">Instance type:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.instance_type}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="fname" class="col-sm-3 text-right control-label col-form-label">Instance ssh key:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.key_name}}
+                                {{aws_form.key_name.help_text}}
+                                  <!-- <input type="text" class="form-control" id="fname" placeholder="First Name Here"> -->
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="lname" class="col-sm-3 text-right control-label col-form-label">Instance description:</label>
+                              <div class="col-sm-9">
+                                {{aws_form.description}}
+                                  <!-- <input type="text" class="form-control" id="lname" placeholder="Last Name Here"> -->
+                              </div>
+                          </div>
+                        </div>
+                      <div class="border-top">
+                          <div class="card-body">
+                              <input type="submit" class="btn btn-primary" value="Submit"/>
+                          </div>
+                      </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--
+    <div class="row">
+      <div class="col-md-6">
+          <div class="card">
+
+          </div>
+        </div> -->
+        {% endif %}
+
+</div>
+{% endblock %}

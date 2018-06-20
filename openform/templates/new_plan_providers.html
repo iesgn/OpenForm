@@ -32,9 +32,14 @@
     <!-- Sales Cards  -->
     <!-- ============================================================== -->
     <div class="row">
-      <h4 class="card-title">Step {{step}}: Select provider</h4>
-      {% for prov in provider %}
       <div class="col-md-6 col-lg-2 col-xlg-3">
+
+      {% if not provider %}
+      <h4 class="card-title">No providers availables, pleae contact with the site-admin. Thanks.</h4>
+      {% else %}
+      <h4 class="card-title">Select provider: </h4>
+      {% for prov in provider %}
+
           <a href="{% url 'new_plan_credentials' %}?provider_id={{prov.provider_id}}">
             <div class="card card-hover">
               <div class="box bg-cyan text-center">
@@ -43,8 +48,10 @@
               </div>
             </div>
           </a>
-      </div>
+
       {% endfor %}
+      {% endif %}
+      </div>
     </div>
 </div>
 {% endblock %}
